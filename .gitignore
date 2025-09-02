@@ -1,0 +1,22 @@
+# Environment files
+.env
+.env.local
+
+# Binary files
+/bin/
+/dist/
+main          # Your compiled binary
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+/tmp/
