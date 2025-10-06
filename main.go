@@ -2,23 +2,25 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"os"
+	"stock-watch/clients/finnhub"
 
 	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	APIKey string
+	FINNHUB_API_KEY string
 }
 
 func NewConfig() *Config {
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Warning: .env file not found, using system environment variables")
+	}
 
 	return &Config{
-		APIKey: mustGetEnv("TELEGRAM_KEY"),
+		FINNHUB_API_KEY: mustGetEnv("FINNHUB_API_KEY"),
 	}
 }
 
@@ -32,22 +34,12 @@ func mustGetEnv(key string) string {
 
 func main() {
 	config := NewConfig()
+	finnhubClient := finnhub.NewClient(config.FINNHUB_API_KEY)
 
-	url := fmt.Sprintf("https://api.telegram.org/bot%s/getMe", config.APIKey)
-
-	resp, err := http.Get(url)
+	status, err := finnhubClient.GetMarketStatus("US")
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error reading body:", err)
-		return
-	}
-
-	fmt.Println("Status:", resp.Status)
-	fmt.Println("Body:", string(body))
+	log.Println("Market Status:", status)
 }
