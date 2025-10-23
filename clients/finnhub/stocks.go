@@ -7,5 +7,7 @@ func (c *Client) GetQuote(symbol string) (finnhub.Quote, error) {
 	if err != nil {
 		return finnhub.Quote{}, err
 	}
+	
 	return res, nil
 }
+

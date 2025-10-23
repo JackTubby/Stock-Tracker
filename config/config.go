@@ -1,26 +1,23 @@
-package main
+package config
 
 import (
-	"fmt"
 	"log"
 	"os"
-	"stock-watch/clients/finnhub"
-
 	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	FINNHUB_API_KEY string
+	FINNHUB_API_Key string
 }
 
-func NewConfig() *Config {
+func load() *Config {
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Warning: .env file not found, using system environment variables")
 	}
 
-	return &Config{
-		FINNHUB_API_KEY: mustGetEnv("FINNHUB_API_KEY"),
+	return &Config {
+		FINNHUB_API_Key: mustGetEnv("FINNHUB_API_Key")
 	}
 }
 
@@ -30,15 +27,5 @@ func mustGetEnv(key string) string {
 		log.Fatalf("Environment variable %s is required", key)
 	}
 	return value
-}
-
-func main() {
-	config := NewConfig()
-	finnhubClient := finnhub.NewClient(config.FINNHUB_API_KEY)
-	
-	quote, err := finnhubClient.GetQuote("AAPL")
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 
