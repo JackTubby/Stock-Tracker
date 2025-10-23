@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"stock-watch/clients/finnhub"
+	"stock-watch/clients/telegram"
 
 	"github.com/joho/godotenv"
 )
@@ -36,9 +37,19 @@ func main() {
 	config := NewConfig()
 	finnhubClient := finnhub.NewClient(config.FINNHUB_API_KEY)
 	
-	quote, err := finnhubClient.GetQuote("AAPL")
+	 quote, err := finnhubClient.GetQuote("AAPL")
+	 if err != nil {
+		 log.Fatal(err) 
+	}
+	fmt.Println("ingore: ", quote)
+	fmt.Println("               ")
+
+	telegramClient := telegram.NewClient()
+
+	getMe, err := telegramClient.GetMe()
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Printf("%+v\n", getMe)
 }
 
