@@ -1,7 +1,7 @@
 package telegram
 
 import (
-	"os"
+	"log"
 )
 
 type Client struct {
@@ -9,8 +9,11 @@ type Client struct {
 	token string
 }
 
-func NewClient() *Client {
-	token := os.Getenv("TELEGRAM_TOKEN")
+func NewClient(token string) *Client {
+	if token == "" {
+		log.Fatalf("Telegram token does not exist!")
+		return nil
+	}
 	fullUrl := "https://api.telegram.org/bot" + token + "/"
 	return &Client {
 		url: fullUrl,
