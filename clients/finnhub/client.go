@@ -2,6 +2,7 @@ package finnhub
 
 import (
 	"context"
+	"log"
 
 	finnhub "github.com/Finnhub-Stock-API/finnhub-go/v2"
 )
@@ -13,6 +14,9 @@ type Client struct {
 }
 
 func NewClient(apiKey string) *Client {
+	if apiKey == "" {
+		log.Fatal("Finnhub API key is missing")
+	}
 	cfg := finnhub.NewConfiguration()
 	cfg.AddDefaultHeader("X-Finnhub-Token", apiKey)
 
