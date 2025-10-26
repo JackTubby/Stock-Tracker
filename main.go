@@ -11,9 +11,10 @@ func main() {
 	cfg := config.Load()
 	
 	telegramClient := telegram.NewClient(cfg.TelegramToken)
-	
+	var lastOffset int
+
 	for {
-		updates, err := telegramClient.GetUpdates()
+		updates, err := telegramClient.GetUpdates(lastOffset)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -21,9 +22,13 @@ func main() {
 		for _, update := range updates {
 			text := update.Message.Text
 			chatID := update.Message.Chat.Id
+			lastOffset = update.UpdateId + 1
 			
 			if text == "/start" {
 				telegramClient.SendMessage(chatID, "Welcome!")
+			}
+			if text == "hey" {
+				telegramClient.SendMessage(chatID, "You said 'hey'!")
 			}
 		}
 		

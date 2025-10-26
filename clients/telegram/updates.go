@@ -28,9 +28,8 @@ type Chat struct {
 	Type string `json:"type"`
 }
 
-func (c *Client) GetUpdates() ([]Update, error) {
-	url := c.url + "getUpdates"
-	fmt.Println("URL: ", url)
+func (c *Client) GetUpdates(lastOffset int) ([]Update, error) {
+	url := c.url + "getUpdates?offset=" + fmt.Sprint(lastOffset)
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
