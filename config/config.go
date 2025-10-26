@@ -12,6 +12,7 @@ type Config struct {
 
 func Load() *Config {
 	godotenv.Load()
+
 	return &Config{
 		FinnhubApiKey:  os.Getenv("FINNHUB_API_KEY"),
 		TelegramToken:  os.Getenv("TELEGRAM_TOKEN"),
