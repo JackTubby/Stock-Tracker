@@ -21,11 +21,14 @@ type Message struct {
 	MessageId int    `json:"message_id"`
 	Chat      Chat   `json:"chat"`
 	Text      string `json:"text"`
+	Entities []Entity `json:"entities"`
 }
 
 type Chat struct {
 	Id   int    `json:"id"`
 	Type string `json:"type"`
+	Offset int `json:"offset"`
+	Length int `json:"length"`
 }
 
 func (c *Client) GetUpdates(lastOffset int) ([]Update, error) {
